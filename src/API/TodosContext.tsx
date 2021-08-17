@@ -16,22 +16,22 @@ const initialState: TodosState = {
   todos: []
 }
 
-export const TodosContext = createContext<(TodosState | Actions)[]>([initialState, {}]);
+export const TodosContext = createContext<[TodosState, Actions]>([initialState, {}]);
 
 export const TodosProvider = (props: PropsWithChildren) => {
   const [state, setState] = createStore<TodosState>(initialState);
-  
-  const store = [ 
+
+  const store: [TodosState, Actions] = [
     state,
     {
       addTodo(todo: ITodo) {
-        setState('todos', (t) => [ ...t, todo ]);
+        setState('todos', (t) => [...t, todo]);
       }
     }
   ];
 
   return (
-    <TodosContext.Provider value={ store }>
+    <TodosContext.Provider value={store}>
       {props.children}
     </TodosContext.Provider>
   )

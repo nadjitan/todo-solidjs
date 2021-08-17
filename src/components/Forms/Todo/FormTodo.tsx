@@ -18,7 +18,7 @@ const FormTodo: Component = () => {
 
   const submit = (e: Event) => {
     e.preventDefault();
-    
+
     addTodo(data());
     console.log(state[$RAW].todos);
   }
