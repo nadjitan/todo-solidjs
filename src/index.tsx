@@ -1,6 +1,11 @@
-import { render } from "solid-js/web";
+import { render } from 'solid-js/web';
 
-import "./index.css";
-import App from "./App";
+import './index.css';
+import App from './App';
+import { TodosProvider } from './API/TodosContext';
 
-render(() => <App />, document.getElementById("root"));
+render(() => (
+  <TodosProvider>
+    <App />
+  </TodosProvider>
+), document.getElementById('root'));

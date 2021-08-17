@@ -1,0 +1,66 @@
+.formTodo {
+  background-color: white;
+  display: grid;
+  place-items: center;
+  position: -webkit-sticky;
+  position: sticky; 
+  padding: 2rem;
+  left: 38%;
+  top: 25%;
+
+  border-radius: 20px;
+  -webkit-box-shadow: 0px 0px 11px 0px rgba(50, 50, 50, 0.28);
+  -moz-box-shadow:    0px 0px 11px 0px rgba(50, 50, 50, 0.28);
+  box-shadow:         0px 0px 11px 0px rgba(50, 50, 50, 0.28);
+
+  width: 300px;
+  height: 350px;
+}
+
+/* MOBILE */
+@media (max-width: 35em) {
+  .formTodo {
+    left: 15%;
+    top: 15%;
+  } 
+}
+
+.formTodo section {
+  position: relative;
+  display: grid;
+  align-items: center;
+  width: 80%;
+}
+
+.formTodo section input {
+  position: relative;
+  padding: 0.5rem;
+}
+.formTodo section input:not(input[value='']) ~ label,
+.formTodo section input:focus ~ label {
+  font-size: 0.8rem;
+  top: -12px;
+}
+
+.formTodo section label {
+  transition: all 0.2s ease-in-out;
+  background-color: white;
+  padding: 0.2rem;
+  pointer-events: none;
+  position: absolute;
+  margin-left: 0.5rem;
+}
+
+.formTodo .createTodo {
+  background-color: black;
+  color: white;
+  padding: 0.8rem 0 0.8rem 0;
+  border-radius: 20px;
+}
+
+.formTodo .exit {
+  background-color: transparent;
+  position: absolute;
+  top: 20px;
+  right: 30px;
+}

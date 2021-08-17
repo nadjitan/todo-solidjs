@@ -1,0 +1,26 @@
+.todo {
+  background-color: white;
+  display: grid;
+  align-content: start;
+  position: relative;
+  padding: 20px;
+  row-gap: 10px;
+
+  border-radius: 20px;
+  -webkit-box-shadow: 0px 0px 11px 0px rgba(50, 50, 50, 0.28);
+  -moz-box-shadow:    0px 0px 11px 0px rgba(50, 50, 50, 0.28);
+  box-shadow:         0px 0px 11px 0px rgba(50, 50, 50, 0.28);
+
+  width: 280px;
+  height: 230px;
+}
+
+.todo ul {
+  margin-left: 1rem;
+}
+
+.todoEdit {
+  position: absolute;
+  right: 20px;
+  bottom: 15px;
+}

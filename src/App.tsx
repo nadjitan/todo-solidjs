@@ -1,26 +1,32 @@
-import type { Component } from "solid-js";
+import type { Component } from 'solid-js';
 
-import logo from "./logo.svg";
-import styles from "./App.module.css";
+import styles from './App.module.css';
+import FormTodo from './components/Forms/Todo/FormTodo';
+import Todo from './components/Todo/Todo';
 
 const App: Component = () => {
   return (
-    <div class={styles.App}>
-      <header class={styles.header}>
-        <img src={logo} class={styles.logo} alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          class={styles.link}
-          href="https://github.com/solidjs/solid"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn Solid
-        </a>
-      </header>
-    </div>
+    <>
+      <div class={styles.App}>
+        <Todo />
+        <Todo />
+        <Todo />
+        <Todo />
+        <Todo />
+        <Todo />
+        <Todo />
+      </div>
+
+      <div class={styles.stickyForm}>
+        <FormTodo />
+      </div>
+
+      <div class={styles.stickyButton}>
+        <button id={styles.addTodo}>
+
+        </button>
+      </div>
+    </>
   );
 };
 

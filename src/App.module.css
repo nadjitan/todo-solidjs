@@ -1,33 +1,56 @@
 .App {
-  text-align: center;
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  row-gap: 2rem;
+  padding: 20px 0 20px 0;
+
+  height: max-content;
+  width: 70%;
 }
 
-.logo {
-  animation: logo-spin infinite 20s linear;
-  height: 40vmin;
+.stickyForm,
+.stickyButton {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.stickyForm {
+  background-color: rgba(0, 0, 0, 0.349);
+}
+
+.stickyButton {
   pointer-events: none;
 }
 
-.header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+#addTodo {
+  display: grid;
+  place-items: center;
+  position: -webkit-sticky;
+  position: sticky; 
+  left: 90%;
+  top: 85%;
+  pointer-events: auto;
+
+  background-color: black;
+  border-radius: 50%;
+  -webkit-box-shadow: 0px 0px 11px 0px rgba(50, 50, 50, 0.28);
+  -moz-box-shadow:    0px 0px 11px 0px rgba(50, 50, 50, 0.28);
+  box-shadow:         0px 0px 11px 0px rgba(50, 50, 50, 0.28);
+
+  width: 70px;
+  height: 70px;
 }
 
-.link {
-  color: #b318f0;
+/* MOBILE */
+@media (max-width: 35em) {
+  #addTodo {
+    left: 80%;
+    top: 86%;
+  }  
 }
+/* DESKTOP */
+/* @media (min-width: 35em) {
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+} */
