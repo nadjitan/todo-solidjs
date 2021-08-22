@@ -1,7 +1,7 @@
 .App {
   display: grid;
   grid-gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
   row-gap: 2rem;
   padding: 20px 0 20px 0;
 
@@ -9,18 +9,10 @@
   width: 70%;
 }
 
-.stickyForm,
-.stickyButton {
+#addTodoBG {
   position: absolute;
   width: 100%;
   height: 100%;
-}
-
-.stickyForm {
-  background-color: rgba(0, 0, 0, 0.349);
-}
-
-.stickyButton {
   pointer-events: none;
 }
 
@@ -45,6 +37,9 @@
 
 /* MOBILE */
 @media (max-width: 35em) {
+  .App {
+    place-items: center;
+  }
   #addTodo {
     left: 80%;
     top: 86%;

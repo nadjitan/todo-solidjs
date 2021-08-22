@@ -1,24 +1,34 @@
-import type { Component } from 'solid-js';
+import { Component, For } from 'solid-js';
 
 import styles from './Todo.module.css';
 
 export interface ITodo {
+  created?: Date;
+  updated?: Date;
   title: string;
   description: string;
-  todos: string[];
+  actions: { action: string; completed: boolean }[];
 }
 
-const Todo: Component = () => {
+const Todo: Component<ITodo> = (props) => {
+
+  const { title, description, actions } = props;
+
   return (
     <div class={styles.todo}>
-      <h3>TODO TITLE</h3>
-      <p>description</p>
+      <h3 textContent={title} />
+
+      <p textContent={description} />
+
       <ul>
-        <li>Todo 1</li>
-        <li>Todo 2</li>
-        <li>Todo 3</li>
+        <For each={actions}>
+          {item =>
+            <li textContent={item.action} />
+          }
+        </For>
       </ul>
-      <button class={styles.todoEdit}>Edit</button>
+
+      <button class={styles.todoEdit} textContent={'Edit'} />
     </div>
   );
 };

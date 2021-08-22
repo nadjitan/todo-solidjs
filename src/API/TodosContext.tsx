@@ -25,7 +25,7 @@ export const TodosProvider = (props: PropsWithChildren) => {
     state,
     {
       addTodo(todo: ITodo) {
-        setState('todos', (t) => [...t, todo]);
+        setState('todos', t => [...t, todo]);
       }
     }
   ];
