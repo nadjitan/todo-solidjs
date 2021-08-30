@@ -1,7 +1,7 @@
 {
   "name": "vite-template-solid",
   "version": "0.0.0",
-  "description": "",
+  "description": "Todo app made using SolidJS & Tailwind CSS",
   "scripts": {
     "start": "vite",
     "dev": "vite",
@@ -10,6 +10,9 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "autoprefixer": "^10.3.3",
+    "postcss": "^8.3.6",
+    "tailwindcss": "^2.2.8",
     "vite": "^2.4.4",
     "vite-plugin-solid": "^2.0.1"
   },

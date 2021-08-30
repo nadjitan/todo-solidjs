@@ -1,110 +1,125 @@
 .formTodoBG {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  transition: all 0.6s ease;
+  @apply
+  absolute
+  transition-all
+  duration-300
+  w-full
+  h-full;
   
-  animation: 0.6s ease SlideIn;
+  animation: 0.4s ease SlideIn;
 }
 
 #formTodo {
-  background-color: white;
-  display: grid;
-  place-items: center;
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
+  @apply
+  bg-white
+  grid
+  place-items-center
+  content-start
+  gap-8
 
-  -webkit-box-shadow: 0px 0px 11px 0px rgba(50, 50, 50, 0.28);
-  -moz-box-shadow:    0px 0px 11px 0px rgba(50, 50, 50, 0.28);
-  box-shadow:         0px 0px 11px 0px rgba(50, 50, 50, 0.28);
+  overflow-y-auto
+  sticky
+  z-10
+  top-0
+  shadow-xl
 
-  width: 400px;
-  height: 100vh;
+  h-screen
+  md:w-96
+  sm:w-full;
 }
 
-/* MOBILE */
-@media (max-width: 35em) {
-  #formTodo {
-    z-index: 1;
-    top: 0;
-    width: 100%;
-    height: 100vh;
-    border-radius: 0;
-  } 
+#formTodo h3 {
+  @apply
+  mt-12;
 }
 
 #formTodo section {
-  position: relative;
-  display: grid;
-  align-items: center;
-  height: max-content;
-  width: 80%;
+  @apply
+  relative
+  grid
+  items-center
+  h-auto
+  w-4/5;
 }
 
 #formTodo label {
-  transition: all 0.2s ease-in-out;
-  background-color: white;
-  padding: 0.2rem;
-  pointer-events: none;
-  position: absolute;
-  margin-left: 0.5rem;
+  @apply
+  bg-white
+  absolute
+  top-1
+  p-1
+
+  text-gray-500
+  pointer-events-none
+  ml-2
+  transition-all
+  duration-100;
 }
 
 #formTodo section input {
-  position: relative;
-  padding: 0.5rem;
+  @apply
+  relative
+  p-2
+  rounded-md
+  border-2
+  border-black
+  focus:border-white;
 }
-#formTodo section input:not(input[value='']) ~ label,
+#formTodo section input:not(:placeholder-shown) ~ label,
 #formTodo section input:focus ~ label {
-  font-size: 0.8rem;
-  top: -12px;
+  @apply
+  text-sm
+  text-black
+  -top-3;
 }
 
 #formTodo #containerActions {
-  max-height: 300px;
-  overflow-y: auto;
-  padding: 5px 0 5px 0;
-  row-gap: 1rem;
+  @apply
+  gap-y-4
+  pt-1
+  pb-1;
 }
 #formTodo .action {
-  display: grid;
-  position: relative;
+  @apply
+  grid
+  relative;
 }
 #formTodo .deleteAction {
-  background: black;
-  color: white;
-  align-self: center;
-  position: absolute;
-  right: 0px;
-  height: 100%;
-  width: 30px;
+  @apply
+  bg-black
+  absolute
+  right-0
+  
+  text-white
+  self-center
+  rounded-tr-md
+  rounded-br-md
+
+  w-7
+  h-full;
 }
 #formTodo #addAction {
-  background: transparent;
-  place-self: center;
-  width: max-content;
+  @apply
+  bg-transparent
+  place-self-center
+  w-auto;
 }
 
 #formTodo .createTodo {
-  background-color: black;
-  color: white;
-  padding: 0.8rem 0 0.8rem 0;
-  border-radius: 20px;
+  @apply
+  bg-black
+  pt-3
+  pb-3
+  text-white
+  rounded-md;
 }
 
 #formTodo .exit {
-  background-color: transparent;
-  position: absolute;
-  top: 20px;
-  right: 30px;
-}
-
-#formTodo .exit {
-  background-color: transparent;
-  position: absolute;
-  top: 20px;
-  right: 30px;
+  @apply
+  bg-transparent
+  absolute
+  top-5
+  right-7;
 }
 
 @keyframes SlideIn {

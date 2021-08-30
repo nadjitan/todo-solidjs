@@ -3,27 +3,28 @@ import { Component, For } from 'solid-js';
 import styles from './Todo.module.css';
 
 export interface ITodo {
-  created?: Date;
-  updated?: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
   title: string;
-  description: string;
   actions: { action: string; completed: boolean }[];
 }
 
 const Todo: Component<ITodo> = (props) => {
 
-  const { title, description, actions } = props;
+  const { title, actions } = props;
 
   return (
     <div class={styles.todo}>
       <h3 textContent={title} />
 
-      <p textContent={description} />
-
       <ul>
         <For each={actions}>
           {item =>
-            <li textContent={item.action} />
+            <li>
+              <input id={item.action} type="checkbox" checked={item.completed} />
+              &nbsp;
+              <label htmlFor={item.action} textContent={item.action} />
+            </li>
           }
         </For>
       </ul>

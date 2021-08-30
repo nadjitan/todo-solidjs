@@ -3,6 +3,8 @@ import { createContext, PropsWithChildren } from 'solid-js';
 import { createStore } from 'solid-js/store';
 import { ITodo } from '../components/Todo/Todo';
 
+// https://todo-apps-server.herokuapp.com/todos
+
 interface TodosState {
   state: 'idle' | 'loading' | 'success' | 'failed';
   todos: ITodo[];

@@ -1,26 +1,35 @@
 .todo {
-  background-color: white;
-  display: grid;
-  align-content: start;
-  position: relative;
-  padding: 20px;
-  row-gap: 10px;
+  @apply
+  bg-white
+  relative
+  grid
+  content-start
+  gap-y-3
 
-  border-radius: 20px;
-  -webkit-box-shadow: 0px 0px 11px 0px rgba(50, 50, 50, 0.28);
-  -moz-box-shadow:    0px 0px 11px 0px rgba(50, 50, 50, 0.28);
-  box-shadow:         0px 0px 11px 0px rgba(50, 50, 50, 0.28);
+  rounded-lg
+  shadow-md
+  p-5
+  
+  h-64
+  w-72;
+}
 
-  width: 280px;
-  height: 230px;
+.todo h3,
+.todo p {
+  @apply
+  overflow-hidden
+  whitespace-nowrap
+  overflow-ellipsis;
 }
 
 .todo ul {
-  margin-left: 1rem;
+  @apply
+  list-none
 }
 
 .todoEdit {
-  position: absolute;
-  right: 20px;
-  bottom: 15px;
+  @apply
+  absolute
+  right-5
+  bottom-4
 }
