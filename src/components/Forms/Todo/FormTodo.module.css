@@ -1,8 +1,14 @@
 .formTodoBG {
   @apply
   absolute
+  grid
+  sm:flex
+
+  pointer-events-none
   transition-all
   duration-300
+  z-0
+
   w-full
   h-full;
   
@@ -17,6 +23,7 @@
   content-start
   gap-8
 
+  pointer-events-auto
   overflow-y-auto
   sticky
   z-10
@@ -24,13 +31,16 @@
   shadow-xl
 
   h-screen
-  md:w-96
-  sm:w-full;
+  w-full
+  sm:w-1/2
+  md:w-2/4
+  lg:w-2/6;
 }
 
 #formTodo h3 {
   @apply
-  mt-12;
+  text-xl
+  mt-20;
 }
 
 #formTodo section {
@@ -55,7 +65,6 @@
   transition-all
   duration-100;
 }
-
 #formTodo section input {
   @apply
   relative
@@ -63,9 +72,10 @@
   rounded-md
   border-2
   border-black
-  focus:border-white;
+  focus:border-white
+  w-full;
 }
-#formTodo section input:not(:placeholder-shown) ~ label,
+#formTodo section input:not(:placeholder-shown) + label,
 #formTodo section input:focus ~ label {
   @apply
   text-sm
@@ -105,18 +115,30 @@
   w-auto;
 }
 
-#formTodo .createTodo {
+#formTodo .createTodo,
+#formTodo .updateTodo,
+#formTodo .deleteTodo {
+  transition: all 1s ease-;
   @apply
   bg-black
+  inline-flex
   pt-3
   pb-3
+
   text-white
-  rounded-md;
+  font-bold
+  rounded-md
+  justify-center
+  items-center
+  w-full;
+}
+#formTodo .deleteTodo {
+  @apply
+  bg-red-600
 }
 
 #formTodo .exit {
   @apply
-  bg-transparent
   absolute
   top-5
   right-7;
@@ -129,15 +151,5 @@
 
   100% {
     left: 0px;
-  }
-}
-
-@keyframes FadeIn {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
   }
 }

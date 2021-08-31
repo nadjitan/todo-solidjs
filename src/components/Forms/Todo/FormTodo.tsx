@@ -1,28 +1,31 @@
 import { Component, useContext, For, Show, createEffect } from 'solid-js';
 import { $RAW, createStore, SetStoreFunction, Store } from 'solid-js/store';
 import { css } from 'solid-styled-components';
+import { AiOutlinePlus } from 'solid-icons/ai';
+import { IoClose } from 'solid-icons/io';
 
 import { ITodo } from '../../Todo/Todo';
-import { FormAnimsState } from '../../../App';
-import { TodosContext } from '../../../API/TodosContext';
+import { FormState } from '../../../App';
+import { TodosContext } from '../../../api/TodosContext';
 
 import styles from './FormTodo.module.css';
+import loading from '../../../assets/three-dots.svg';
 
 const FormTodo: Component<{
-  formAnims: Store<FormAnimsState>;
-  setFormAnims: SetStoreFunction<FormAnimsState>;
+  formState: Store<FormState>;
+  setFormState: SetStoreFunction<FormState>;
 }> = (props) => {
-  // On/Off UI
-  const { formAnims, setFormAnims } = props;
 
-  const [state, { addTodo }] = useContext(TodosContext);
+  const { formState, setFormState } = props; // On/Off UI
+
+  const [state, { createTodo, updateTodo, deleteTodo }] = useContext(TodosContext);
 
   createEffect(() => {
-    formAnims.close
+    formState.close
       && setTimeout(() => {
-        setFormAnims('open', false);
-        setFormAnims('close', false);
-      }, 400) // Wait CSS transition duration
+        setFormState('open', false);
+        setFormState('close', false);
+      }, 400) // Wait form CSS transition duration
   });
 
   const initialFormState = (): { todo: ITodo } => ({
@@ -35,7 +38,7 @@ const FormTodo: Component<{
 
   const submit = (e: Event) => {
     e.preventDefault();
-    addTodo(formData.todo);
+    createTodo(formData.todo);
     setFormData(initialFormState());
     console.log(state[$RAW].todos);
   }
@@ -43,32 +46,36 @@ const FormTodo: Component<{
   return (
     <div
       class={styles.formTodoBG}
-      className={formAnims.close && css`
-        margin-right: 100%;
-        /* MOBILE */
-        @media (max-width: 35em) {
-          margin-right: 200%;
-        }
+      className={formState.close && css`
+        margin-right: 200vw;
       `}
     >
       <form id={styles.formTodo} onSubmit={e => submit(e)}>
         <button
+          title='Exit'
           type='reset'
           class={styles.exit}
           value=''
-          onClick={e => setFormAnims('close', true)}
-          textContent={'X'}
-          title='Exit'
-        />
+          onClick={e => {
+            setFormState('close', true);
+            setFormState('todoToUpdate', null);
+          }}
+        >
+          <IoClose size='30px' />
+        </button>
 
-        <h3 textContent={'CREATE TODO'} />
+        {
+          formState.todoToUpdate === null
+            ? <h3 textContent={'CREATE TODO'} />
+            : <h3 textContent={'UPDATE TODO'} />
+        }
 
         <section>
           <input
             autocomplete='off'
             type='text'
             id='title'
-            placeholder=''
+            placeholder=' '
             value={formData.todo.title}
             onKeyUp={(e: any) => setFormData('todo', 'title', e.target.value)}
             required
@@ -85,7 +92,7 @@ const FormTodo: Component<{
                     autocomplete='off'
                     type='text'
                     id='todo'
-                    placeholder=''
+                    placeholder=' '
                     value={formData.todo.actions[index()].action}
                     onKeyUp={(e: any) => {
                       setFormData('todo', 'actions', index(), { action: e.target.value });
@@ -104,34 +111,91 @@ const FormTodo: Component<{
                           ...a.slice(index() + 1)
                         ]);
                       }}
-                      textContent={'X'}
-                    />
+                      className='grid place-items-center'
+                    ><IoClose size='20px'/></button>
                   </Show>
                 </div>
               )
             }}
           </For>
 
-          <button
-            id={styles.addAction}
-            onClick={e => {
-              e.preventDefault();
-              setFormData('todo', 'actions', a => [
-                ...a,
-                { action: '', completed: false }
-              ]);
-            }}
-            textContent={'Add Action +'}
-          />
+          {
+            formState.todoToUpdate === null &&
+              <button
+                id={styles.addAction}
+                onClick={e => {
+                  e.preventDefault();
+                  setFormData('todo', 'actions', a => [
+                    ...a,
+                    { action: '', completed: false }
+                  ]);
+                }}
+                className='inline-flex text-sm'
+              >
+                <AiOutlinePlus className='self-center' size='17px' /> ADD ACTION
+              </button>
+          }
         </section>
 
         <section>
-          <button
-            class={styles.createTodo}
-            textContent={'CREATE'}
-          />
+          {
+            formState.todoToUpdate === null
+              ? <button
+                  class={styles.createTodo}
+                  className={state.state === 'creating' && 'pointer-events-none'}
+                >
+                  {
+                    state.state === 'creating' 
+                      ? <img 
+                          src={loading} 
+                          className='w-8 h-5 mt-1 pr-2' 
+                        />
+                      : 'CREATE'
+                  }
+                </button>
+              : <>
+                  <button
+                    className='mt-3'
+                    class={styles.updateTodo}
+                    onClick={e => {
+        
+                    }}
+                  >
+                    UPDATE
+                  </button>
+                  <button
+                    className={`mt-3 ${state.state === 'deleting' && 'pointer-events-none'}`}
+                    class={styles.deleteTodo}
+                    onClick={e => {
+                      e.preventDefault();
+
+                      deleteTodo(formState.todoToUpdate, () => {
+                        setFormState('close', true);
+                        setFormState('todoToUpdate', null);
+                      });
+                    }}
+                  >
+                    {
+                      state.state === 'deleting' 
+                        ? <img 
+                            src={loading} 
+                            className='w-8 h-5 mt-1 pr-2' 
+                          />
+                        : 'DELETE'
+                    }
+                  </button>
+                </>
+          }
         </section>
       </form>
+
+      <div
+        className='pointer-events-auto z-0 sm:w-1/2 lg:w-3/4 h-full'
+        onClick={e => {
+          setFormState('close', true);
+          setFormState('todoToUpdate', null);
+        }}
+      />
     </div>
   );
 };

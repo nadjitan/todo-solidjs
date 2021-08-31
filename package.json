@@ -17,6 +17,9 @@
     "vite-plugin-solid": "^2.0.1"
   },
   "dependencies": {
+    "axios": "^0.21.1",
+    "moment": "^2.29.1",
+    "solid-icons": "^0.2.1",
     "solid-js": "^1.0.7",
     "solid-styled-components": "^0.27.2"
   }
