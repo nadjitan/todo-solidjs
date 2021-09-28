@@ -1,17 +1,61 @@
 import { createContext, PropsWithChildren } from 'solid-js';
 import { createStore, SetStoreFunction } from 'solid-js/store';
+import { AxiosResponse } from 'axios';
+
 import { ITodo } from '../components/Todo/Todo';
 import * as api from '../api/API';
 
+/**
+ * Holds the current state of Todos
+ * 
+ * @property state - idle | loading | failed | fetchFailed | creating | updating | deleting
+ * @property todos - A list of ITodo
+ */
 interface TodosState {
-  state: 'idle' | 'loading' | 'success' | 'failed' | 
-         'fetchFailed' | 'creating' | 'updating' | 'deleting';
+  state: 'idle' | 'loading' | 'failed' | 'fetchFailed' |
+         'creating' | 'updating' | 'deleting';
   todos: ITodo[];
 }
+
+/**
+ * Actions for interacting with the db
+ * 
+ * @property getTodos
+ * @property createTodo
+ * @property updateTodo
+ * @property deleteTodo
+ */
 interface Actions {
-  getTodos?(): void;
-  createTodo?(todo: ITodo): void;
-  updateTodo?(todo: ITodo): void;
+  /**
+   * Fetch all Todos from the db.
+   */
+  fetchTodos?(): void;
+
+  /**
+   * Save a Todo to the db.
+   * 
+   * @param {ITodo} todo Todo object
+   * @param {VoidFunction} [next] Callback to execute once todo is created.
+   * @returns void
+   */
+  createTodo?(todo: ITodo, next?: () => void): void;
+
+  /**
+   * Update a Todo in the db.
+   * 
+   * @param {ITodo} todo Todo object
+   * @param {VoidFunction} [next] Callback to execute once todo is updated.
+   * @returns void
+   */
+  updateTodo?(todo: ITodo, next?: () => void): void;
+
+  /**
+   * Delete a Todo in the db.
+   * 
+   * @param {ITodo} todo Todo object
+   * @param {VoidFunction} [next] Callback to execute once todo is deleted.
+   * @returns void
+   */
   deleteTodo?(todo: ITodo, next?: () => void): void;
 }
 
@@ -20,7 +64,14 @@ const initialState: TodosState = {
   todos: []
 }
 
-const logError = (error: any, stateSetter: SetStoreFunction<TodosState>) => {
+/**
+ * Console log an error and set state to failed
+ * 
+ * @param {Error} error Object that have the error message.
+ * @param {SetStoreFunction<TodosState>} stateSetter Todo state setter.
+ * @returns void
+ */
+const logError = (error: Error, stateSetter: SetStoreFunction<TodosState>) => {
   console.log('%c[ERROR]%c' + error.message, 'color: red');
   stateSetter('state', 'failed');
 }
@@ -33,62 +84,67 @@ export const TodosProvider = (props: PropsWithChildren) => {
   const store: [TodosState, Actions] = [
     state,
     {
-      async getTodos() {
-        try {
-          setState('state', 'loading');
+      async fetchTodos() {
+        setState('state', 'loading');
 
-          const response = await api.fetchTodos();
-
+        await api.fetchTodos()
+        .then((response: AxiosResponse<ITodo[]>) => {
           setState('todos', response.data);
-          setState('state', 'success');
-        } catch (error) {
-          if (error.message === 'Request aborted') {
-            console.log('%c[ATTENTION]%c' + error.message, 'color: yellow');
+          setState('state', 'idle');
+        })
+        .catch((onrejected) => {
+          if (onrejected.message === 'Request aborted') {
+            // console.log('%c[ATTENTION]%c' + onrejected.message, 'color: yellow');
           }
           else {
             setState('state', 'fetchFailed');
-            console.log('%c[ERROR]%c' + error.message, 'color: red');
+            // console.log('%c[ERROR]%c' + onrejected.message, 'color: red');
           }
-        }
+        });
       },
-      async createTodo(todo: ITodo) {
-        try {
-          setState('state', 'creating');
+      
+      async createTodo(todo: ITodo, next?: () => void) {
+        setState('state', 'creating');
 
-          await api.createTodo(todo);
+        await api.createTodo(todo)
+        .then((response: AxiosResponse<ITodo>) => {
+          setState('todos', todos => [...todos, response.data]);
 
-          setState('todos', todos => [...todos, todo]);
-          setState('state', 'success');
-        } catch (error) {
-          logError(error, setState);
-        }
-      },
-      async updateTodo(todo: ITodo) {
-        try {
-          setState('state', 'updating');
-
-          await api.updateTodo(todo);
-
-          setState('todos', todos => todos.map(
-            obj => todos.find(o => o._id === obj._id) || obj
-          ));
-          setState('state', 'success');
-        } catch (error) {
-          logError(error, setState);
-        }
-      },
-      async deleteTodo(todo: ITodo, next?: () => void) {
-        try {
-          setState('state', 'deleting');
-
-          await api.deleteTodo(todo);
-
-          setState('todos', ts => [...ts.filter(t => t._id !== todo._id)]);
           next();
-          setState('state', 'success');
-        } catch (error) {
-          logError(error, setState);
-        }
+
+          setState('state', 'idle');
+        })
+        .catch((onrejected) => onrejected && logError(onrejected, setState));
+      },
+
+      async updateTodo(todo: ITodo, next?: () => void) {
+        setState('state', 'updating');
+
+        await api.updateTodo(todo)
+        .then(() => {
+          setState('todos', todos => todos.map(
+            t => t._id === todo._id ? todo : t
+          ))
+          
+          next();
+
+          setState('state', 'idle');
+        })
+        .catch((onrejected) => onrejected && logError(onrejected, setState));
+      },
+
+      async deleteTodo(todo: ITodo, next?: () => void) {
+        setState('state', 'deleting');
+
+        await api.deleteTodo(todo)
+        .then(() => {
+          setState('todos', ts => [...ts.filter(t => t._id !== todo._id)]);
+
+          next();
+          
+          setState('state', 'idle');
+        })
+        .catch((onrejected) => onrejected && logError(onrejected, setState));
       }
     }
   ];

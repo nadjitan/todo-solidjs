@@ -53,11 +53,12 @@
 }
 
 #formTodo label {
+  padding: 3px;
+  
   @apply
   bg-white
   absolute
   top-1
-  p-1
 
   text-gray-500
   pointer-events-none
@@ -73,27 +74,17 @@
   border-2
   border-black
   focus:border-white
-  w-full;
+  w-full
+  pr-8;
 }
 #formTodo section input:not(:placeholder-shown) + label,
 #formTodo section input:focus ~ label {
   @apply
-  text-sm
+  text-xs
   text-black
   -top-3;
 }
 
-#formTodo #containerActions {
-  @apply
-  gap-y-4
-  pt-1
-  pb-1;
-}
-#formTodo .action {
-  @apply
-  grid
-  relative;
-}
 #formTodo .deleteAction {
   @apply
   bg-black
@@ -107,12 +98,6 @@
 
   w-7
   h-full;
-}
-#formTodo #addAction {
-  @apply
-  bg-transparent
-  place-self-center
-  w-auto;
 }
 
 #formTodo .createTodo,
@@ -134,14 +119,7 @@
 }
 #formTodo .deleteTodo {
   @apply
-  bg-red-600
-}
-
-#formTodo .exit {
-  @apply
-  absolute
-  top-5
-  right-7;
+  bg-red-600;
 }
 
 @keyframes SlideIn {
