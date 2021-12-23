@@ -1,6 +1,6 @@
 # TODO SOLIDJS
 
-A simple todo app made with [SolidJS](https://www.solidjs.com/) and [MongoDB](https://www.mongodb.com/)
+A simple todo app made with [SolidJS](https://www.solidjs.com/)
 
 ## Sample Images
 
